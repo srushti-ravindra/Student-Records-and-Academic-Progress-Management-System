@@ -168,15 +168,7 @@ Refer to the backend routes and controllers for the available API operations.
 
 - Srushti Ravindra
 
-## Acknowledgements
 
-This project is based on the original repository:
-
-[Student Management System — Original Repository](https://github.com/kruthikasrinivasa/student-management-system)
-
-The local project has been configured and customized for the **Student Records and Academic Progress Management System**.
-
----
 
 **Project:** Student Records and Academic Progress Management System  
 **Category:** Full-Stack Web Development  
