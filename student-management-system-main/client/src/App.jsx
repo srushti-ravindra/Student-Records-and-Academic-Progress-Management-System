@@ -29,7 +29,6 @@ function Reports({ students }) {
 
   students.forEach((student) => {
     const course = student.course || "Unknown";
-
     const year = String(student.year ?? "Unknown")
       .replace(/^Year\s*/i, "");
 
@@ -179,7 +178,6 @@ function App() {
   const fetchStudents = async () => {
     try {
       setLoading(true);
-
       const response = await axios.get(API_URL);
 
       setStudents(
@@ -188,7 +186,6 @@ function App() {
       setError("");
     } catch (err) {
       console.error("Failed to load students:", err);
-
       setError(
         "Unable to connect to the backend. Make sure the server is running."
       );
@@ -204,7 +201,8 @@ function App() {
     ]);
 
     setError("");
-    setActivePage("Dashboard");
+    setActivePage("Students");
+    setShowStudentForm(false);
   };
 
   const handleStudentDeleted = async (id) => {
@@ -259,14 +257,12 @@ function App() {
     setEditingStudent(null);
   };
 
+  // Navigation for Dashboard, Students and Reports
   const handleNavigate = (page) => {
     setActivePage(page);
     setTopSearch("");
-
-    if (page === "Students") {
-      // The student directory is displayed on the dashboard.
-      setActivePage("Dashboard");
-    }
+    setShowStudentForm(false);
+    setEditingStudent(null);
   };
 
   const handleAddStudent = () => {
@@ -370,16 +366,31 @@ function App() {
 
           {activePage === "Reports" ? (
             <Reports students={students} />
-          ) : activePage === "Settings" ? (
+          ) : activePage === "Students" ? (
             <section className="reports-page">
-              <div className="welcome-text">
-                <h1>Settings</h1>
-                <p>StudentHub application settings.</p>
+              <div className="welcome-section">
+                <div className="welcome-text">
+                  <h1>Student Directory</h1>
+                  <p>View and manage all registered students.</p>
+                </div>
+                <button
+                  className="add-student-btn"
+                  onClick={handleAddStudent}
+                >
+                  <UserRoundPlus size={19} />
+                  Add Student
+                </button>
               </div>
 
-              <p>
-                Settings options have not been implemented yet.
-              </p>
+              {loading ? (
+                <p>Loading students...</p>
+              ) : (
+                <StudentDirectory
+                  students={filteredStudents}
+                  onStudentDeleted={handleStudentDeleted}
+                  onEditStudent={handleEditStudent}
+                />
+              )}
             </section>
           ) : (
             <>
